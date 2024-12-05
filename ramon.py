@@ -16,6 +16,7 @@ from nanoid import generate
 from pydantic_ai.messages import (
     Message
 )
+import datetime
 
 logfire.configure(send_to_logfire='if-token-present')
 
@@ -30,19 +31,32 @@ class Task(BaseModel):
     priority: str
     description: str
     due_date: str
+    completed_at: str
     metadata: str
 
 @dataclass
 class Database:
-    file: Path = THIS_DIR / 'tasks.json'
+    todo: Path = THIS_DIR / 'tasks.json'
+    done: Path = THIS_DIR / 'done.json'
 
     def read_tasks(self) -> List[Task]:
-        with open(self.file, "r") as f:
+        with open(self.todo, "r") as f:
             return json.load(f)
 
     def write_tasks(self, tasks: List[Task]) -> None:
-        with open(self.file, "w", encoding='utf-8') as f:
+        with open(self.todo, "w", encoding='utf-8') as f:
             json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
+
+    # this could be refactor into a single func and then we can read done or todos based on an arg
+    def read_done(self) -> List[Task]:
+        with open(self.done, "r") as f:
+            return json.load(f)
+
+    def write_done(self, tasks: List[Task]) -> None:
+        with open(self.done, "w", encoding='utf-8') as f:
+            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
+
+
 
 @dataclass
 class Deps:
@@ -76,6 +90,35 @@ async def add_new_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
         tasks: The list of tasks to write.
     """
     ctx.deps.tasks_db.write_tasks(tasks)
+@agent.tool
+async def get_completed_tasks(ctx: RunContext[Deps]) -> list[Task]:
+    """Get all completed tasks from the database.
+
+    Args:
+        ctx: The context.
+    """
+    return ctx.deps.tasks_db.read_done()
+
+@agent.tool
+async def add_new_completed_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
+    """Write a new completed tasks to the database. This needs all the list of done task not only the new one. Make sure that whenever a new task is added to the list of completed, it has a new attribute called completed_at with the current date and time in ISO format.
+
+    Args:
+        ctx: The context.p
+        tasks: The list of completed tasks to write.
+    """
+    ctx.deps.tasks_db.write_done(tasks)
+
+@agent.tool
+async def current_date_time(ctx: RunContext[Deps]) -> str:
+    """Get the current date and time in ISO format.
+
+    Args:
+        ctx: The context.
+    """
+    return datetime.datetime.now().isoformat()
+
+
 
 @agent.tool
 def generate_task_id(ctx: RunContext[Deps]) -> str:
@@ -102,4 +145,5 @@ def chat(prompt: str):
             message_history.extend(result.new_messages())
 
 if __name__ == '__main__':
+    asyncio.run(asyncio.sleep(1))
     chat()
