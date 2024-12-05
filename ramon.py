@@ -31,7 +31,7 @@ class Task(BaseModel):
     priority: str
     description: str
     due_date: str
-    completed_at: str
+    completed_at: str # this is only done for completed tasks not for todo
     metadata: str
 
 @dataclass
