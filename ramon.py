@@ -1,3 +1,5 @@
+
+import click
 import json
 from typing import List
 
@@ -11,8 +13,11 @@ import logfire
 from pathlib import Path
 from pydantic import BaseModel
 from nanoid import generate
+from pydantic_ai.messages import (
+    Message
+)
 
-logfire.configure()
+logfire.configure(send_to_logfire='if-token-present')
 
 THIS_DIR = Path(__file__).parent
 
@@ -78,16 +83,23 @@ def generate_task_id(ctx: RunContext[Deps]) -> str:
     """
     return generate()
 
-async def main():
-    if len(sys.argv) == 1:
-        prompt = 'What do I need to work on?'
-    else:
-        prompt = sys.argv[1]
 
+@click.command()
+@click.argument('prompt', required=False, default='What do I need to work on?')
+def chat(prompt: str):
+    """Start a new chat with ramon."""
+    click.echo("Type 'exit' or 'quit' to exit")
     database = Database()
     deps = Deps(database)
-    result = await agent.run(prompt, deps=deps)
-    debug(result.data)
+    message_history: list[Message] = []
+    while True:
+        prompt = click.prompt("", prompt_suffix="> ")
+        if prompt.strip() in ("exit", "quit"):
+            break
+        if prompt.strip():
+            result = agent.run_sync(prompt, deps=deps, message_history=message_history)
+            print(result.data)
+            message_history.extend(result.new_messages())
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    chat()
