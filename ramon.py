@@ -1,4 +1,3 @@
-
 import click
 import json
 from typing import List
@@ -57,10 +56,17 @@ class Database:
             json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
 
 
+@dataclass
+class JiraClient:
+    def create_ticket(self, project_key: str, task: Task) -> str:
+        print("Creating ticket", project_key, task.model_dump())
+        return "AFF-1234"
+
 
 @dataclass
 class Deps:
     tasks_db: Database
+    jira_client: Any = None
 
 gpt4o = "openai:gpt-4o-mini"
 agent = Agent(
@@ -71,6 +77,16 @@ agent = Agent(
 @agent.system_prompt
 async def system_prompt() -> str:
     return SYSTEM_PROMPT
+
+@agent.tool
+async def create_jira_ticket(ctx: RunContext[Deps], project_key: str, task: Task) -> str:
+    """Create a new Jira ticket.
+
+    Args:
+        ctx: The context.
+        task: The task to create a ticket for.
+    """
+    return ctx.deps.jira_client.create_ticket(project_key, task)
 
 @agent.tool
 async def get_tasks(ctx: RunContext[Deps]) -> list[Task]:
@@ -133,7 +149,8 @@ def chat(prompt: str):
     """Start a new chat with ramon."""
     click.echo("Type 'exit' or 'quit' to exit")
     database = Database()
-    deps = Deps(database)
+    jira = JiraClient()
+    deps = Deps(database, jira)
     message_history: list[Message] = []
     while True:
         prompt = click.prompt("", prompt_suffix="> ")
