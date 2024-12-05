@@ -10,6 +10,7 @@ import sys
 import logfire
 from pathlib import Path
 from pydantic import BaseModel
+from nanoid import generate
 
 logfire.configure()
 
@@ -18,6 +19,7 @@ THIS_DIR = Path(__file__).parent
 SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()
 
 class Task(BaseModel):
+    id: str
     task: str
     owner: str
     priority: str
@@ -28,14 +30,14 @@ class Task(BaseModel):
 @dataclass
 class Database:
     file: Path = THIS_DIR / 'tasks.json'
-    
+
     def read_tasks(self) -> List[Task]:
         with open(self.file, "r") as f:
             return json.load(f)
 
     def write_tasks(self, tasks: List[Task]) -> None:
-        with open(self.file, "w") as f:
-            json.dump([task.dict() for task in tasks], f, indent=4)
+        with open(self.file, "w", encoding='utf-8') as f:
+            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
 
 @dataclass
 class Deps:
@@ -61,17 +63,20 @@ async def get_tasks(ctx: RunContext[Deps]) -> list[Task]:
     return ctx.deps.tasks_db.read_tasks()
 
 @agent.tool
-async def write_tasks(ctx: RunContext[Deps], tasks: str) -> None:
-    """Write tasks to the database.
+async def add_new_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
+    """Write a new tasks to the database. This needs all the list of task not only the new one
 
     Args:
-        ctx: The context.
+        ctx: The context.p
         tasks: The list of tasks to write.
     """
-    # tasks_data = [task.__dict__ for task in tasks]
     ctx.deps.tasks_db.write_tasks(tasks)
 
-
+@agent.tool
+def generate_task_id(ctx: RunContext[Deps]) -> str:
+    """Generate a new task id.
+    """
+    return generate()
 
 async def main():
     if len(sys.argv) == 1:

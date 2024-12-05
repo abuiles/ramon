@@ -7,3 +7,4 @@ devtools
 pytest
 black
 flake8
+nanoid
