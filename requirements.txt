@@ -1,0 +1,9 @@
+httpx
+pydantic
+asyncio
+pydantic-ai
+logfire
+devtools
+pytest
+black
+flake8
