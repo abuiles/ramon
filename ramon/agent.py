@@ -7,7 +7,6 @@ from pydantic_ai import Agent, ModelRetry, RunContext
 from devtools import debug
 import asyncio
 import sys
-import logfire
 from pathlib import Path
 from pydantic import BaseModel
 from nanoid import generate
@@ -17,7 +16,6 @@ from pydantic_ai.messages import (
 import datetime
 from .models import Task, Database, JiraClient, Deps
 
-logfire.configure(send_to_logfire='if-token-present')
 
 THIS_DIR = Path(__file__).parent
 SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()

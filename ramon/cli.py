@@ -7,7 +7,10 @@ from ramon import (
     JiraClient,
     Deps,
     Message,
-)    
+)
+
+import logfire
+logfire.configure(send_to_logfire='if-token-present')
 
 @click.group(cls=DefaultGroup, default='chat', default_if_no_args=True)
 def cli():
