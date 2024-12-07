@@ -8,3 +8,4 @@ pytest
 black
 flake8
 nanoid
+click_default_group

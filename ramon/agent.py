@@ -15,49 +15,12 @@ from pydantic_ai.messages import (
     Message
 )
 import datetime
-from ramon.models import Task
+from .models import Task, Database, JiraClient, Deps
 
 logfire.configure(send_to_logfire='if-token-present')
 
 THIS_DIR = Path(__file__).parent
-
 SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()
-
-
-@dataclass
-class Database:
-    todo: Path = THIS_DIR / 'tasks.json'
-    done: Path = THIS_DIR / 'done.json'
-
-    def read_tasks(self) -> List[Task]:
-        with open(self.todo, "r") as f:
-            return json.load(f)
-
-    def write_tasks(self, tasks: List[Task]) -> None:
-        with open(self.todo, "w", encoding='utf-8') as f:
-            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
-
-    # this could be refactor into a single func and then we can read done or todos based on an arg
-    def read_done(self) -> List[Task]:
-        with open(self.done, "r") as f:
-            return json.load(f)
-
-    def write_done(self, tasks: List[Task]) -> None:
-        with open(self.done, "w", encoding='utf-8') as f:
-            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
-
-
-@dataclass
-class JiraClient:
-    def create_ticket(self, project_key: str, task: Task) -> str:
-        print("Creating ticket", project_key, task.model_dump())
-        return "AFF-1234"
-
-
-@dataclass
-class Deps:
-    tasks_db: Database
-    jira_client: Any = None
 
 gpt4o = "openai:gpt-4o-mini"
 agent = Agent(
@@ -97,6 +60,7 @@ async def add_new_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
         tasks: The list of tasks to write.
     """
     ctx.deps.tasks_db.write_tasks(tasks)
+
 @agent.tool
 async def get_completed_tasks(ctx: RunContext[Deps]) -> list[Task]:
     """Get all completed tasks from the database.
@@ -124,7 +88,6 @@ async def current_date_time(ctx: RunContext[Deps]) -> str:
         ctx: The context.
     """
     return datetime.datetime.now().isoformat()
-
 
 
 @agent.tool
