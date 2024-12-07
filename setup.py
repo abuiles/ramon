@@ -15,10 +15,15 @@ setup(
         "black",
         "flake8",
         "nanoid",
-        "click_default_group",
+        "click_default_group"
     ],
     tests_require=[
         "pytest",
+        "dirty-equals",
+        "anyio",
+        "anyio[trio]",
+        "trio"
+
     ],
     entry_points={
         "console_scripts": [

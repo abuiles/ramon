@@ -33,8 +33,9 @@ class Database:
 
     def read_tasks(self) -> List[Task]:
         with open(self.tasks_file, "r") as f:
-            return json.load(f)
-        
+            tasks_data = json.load(f)
+            return [Task(**task) for task in tasks_data]
+
     def write_tasks(self, tasks: List[Task]) -> None:
         existing_tasks = {task.id: task for task in self.read_tasks()}
         for task in tasks:

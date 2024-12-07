@@ -44,12 +44,9 @@ async def create_jira_ticket(ctx: RunContext[Deps], project_key: str, task: Task
 
 @agent.tool
 async def get_tasks(ctx: RunContext[Deps]) -> list[Task]:
-    """Get all tasks from the database.
-
-    Args:
-        ctx: The context.
-    """
-    return ctx.deps.tasks_db.read_tasks()
+    """Get all tasks from the database."""
+    tasks = ctx.deps.tasks_db.read_tasks()
+    return [task.model_dump() for task in tasks]
 
 @agent.tool
 async def update_or_create_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
