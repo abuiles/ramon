@@ -29,25 +29,16 @@ THIS_DIR = Path(__file__).parent
 
 @dataclass
 class Database:
-    todo: Path = THIS_DIR / 'tasks.json'
-    done: Path = THIS_DIR / 'done.json'
+    tasks_file: Path = THIS_DIR / 'tasks.json'
 
     def read_tasks(self) -> List[Task]:
-        with open(self.todo, "r") as f:
-            return json.load(f)
+        with open(self.tasks_file, "r") as f:
+            tasks_data = json.load(f)
+            return [Task(**task) for task in tasks_data]
 
     def write_tasks(self, tasks: List[Task]) -> None:
-        with open(self.todo, "w", encoding='utf-8') as f:
-                json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
-
-    # this could be refactor into a single func and then we can read done or todos based on an arg
-    def read_done(self) -> List[Task]:
-        with open(self.done, "r") as f:
-            return json.load(f)
-
-    def write_done(self, tasks: List[Task]) -> None:
-        with open(self.done, "w", encoding='utf-8') as f:
-                json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
+        with open(self.tasks_file, "w", encoding='utf-8') as f:
+            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
 
 
 @dataclass
