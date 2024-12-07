@@ -1,6 +1,6 @@
-# Ramon
+# Ram-on
 
-Ramon is a good assistant
+Ramon is a good AI assistant. It streamlines tasks and boosts everyday efficiency.
 
 ## Using with LLM
 
