@@ -3,8 +3,8 @@
 
 # Install dependencies and test dependencies
 @init:
-  pipenv run pip install -e '.[test]'
+  poetry install
 
 # Run pytest with supplied options
 @test *options:
-  pipenv run pytest {{options}}
+  poetry run pytest {{options}}
