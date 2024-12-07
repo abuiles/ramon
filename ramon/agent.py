@@ -52,33 +52,14 @@ async def get_tasks(ctx: RunContext[Deps]) -> list[Task]:
     return ctx.deps.tasks_db.read_tasks()
 
 @agent.tool
-async def add_new_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
-    """Write a new tasks to the database. This needs all the list of task not only the new one
+async def update_or_create_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
+    """Write or update tasks to the database.
 
     Args:
         ctx: The context.p
-        tasks: The list of tasks to write.
+        tasks: The list of tasks to write or update.
     """
     ctx.deps.tasks_db.write_tasks(tasks)
-
-@agent.tool
-async def get_completed_tasks(ctx: RunContext[Deps]) -> list[Task]:
-    """Get all completed tasks from the database.
-
-    Args:
-        ctx: The context.
-    """
-    return ctx.deps.tasks_db.read_done()
-
-@agent.tool
-async def add_new_completed_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
-    """Write a new completed tasks to the database. This needs all the list of done task not only the new one. Make sure that whenever a new task is added to the list of completed, it has a new attribute called completed_at with the current date and time in ISO format.
-
-    Args:
-        ctx: The context.p
-        tasks: The list of completed tasks to write.
-    """
-    ctx.deps.tasks_db.write_done(tasks)
 
 @agent.tool
 async def current_date_time(ctx: RunContext[Deps]) -> str:

@@ -33,12 +33,14 @@ class Database:
 
     def read_tasks(self) -> List[Task]:
         with open(self.tasks_file, "r") as f:
-            tasks_data = json.load(f)
-            return [Task(**task) for task in tasks_data]
-
+            return json.load(f)
+        
     def write_tasks(self, tasks: List[Task]) -> None:
+        existing_tasks = {task.id: task for task in self.read_tasks()}
+        for task in tasks:
+            existing_tasks[task.id] = task
         with open(self.tasks_file, "w", encoding='utf-8') as f:
-            json.dump([task.model_dump() for task in tasks], f, ensure_ascii=False, indent=4)
+            json.dump([task.model_dump() for task in existing_tasks.values()], f, ensure_ascii=False, indent=4)
 
 
 @dataclass
