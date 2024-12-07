@@ -535,6 +535,25 @@ files = [
 ]
 
 [[package]]
+name = "inline-snapshot"
+version = "0.14.2"
+description = "golden master/snapshot/approval testing library which puts the values right into your source code"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "inline_snapshot-0.14.2-py3-none-any.whl", hash = "sha256:81bd87ec285a073de2a95eade4c67fb0c255d2937686d22e10bd17b09172715e"},
+    {file = "inline_snapshot-0.14.2.tar.gz", hash = "sha256:9893cdb42c261e702672993368259fd37dbb455b6e668a2178151b28a2a88478"},
+]
+
+[package.dependencies]
+asttokens = ">=2.0.5"
+black = ">=23.3.0"
+click = ">=8.1.4"
+executing = ">=2.1.0"
+rich = ">=13.7.1"
+typing-extensions = "*"
+
+[[package]]
 name = "isort"
 version = "5.13.2"
 description = "A Python utility / library to sort Python imports."
@@ -1457,4 +1476,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "84794937ae4e207e44528a62aa54e94168902f350fb011aa24390f4bbb5757b5"
+content-hash = "00dbd96c537e3c35bbf20bd5e8115063c78b0eaa39ca0ee4048a57fc14e00bbe"

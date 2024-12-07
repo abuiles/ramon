@@ -21,6 +21,7 @@ dirty-equals = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
+inline_snapshot = "*"
 
 [build-system]
 requires = ["poetry-core"]
@@ -44,3 +45,6 @@ line_length = 88
 [tool.flake8]
 max-line-length = 88
 extend-ignore = ["E203"]
+
+[tool.logfire]
+ignore_no_config = true
