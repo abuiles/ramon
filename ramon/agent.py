@@ -1,21 +1,13 @@
 import json
 from typing import List
-
 from dataclasses import dataclass
 from typing import Any, Protocol
-from pydantic_ai import Agent, ModelRetry, RunContext
-from devtools import debug
-import asyncio
-import sys
+from pydantic_ai import Agent, RunContext
 from pathlib import Path
-from pydantic import BaseModel
 from nanoid import generate
-from pydantic_ai.messages import (
-    Message
-)
+from pydantic_ai.messages import Message
 import datetime
-from .models import Task, Database, JiraClient, Deps
-
+from .models import Task, Deps
 
 THIS_DIR = Path(__file__).parent
 SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()
@@ -51,7 +43,7 @@ async def update_or_create_task(ctx: RunContext[Deps], tasks: list[Task]) -> Non
     """Write or update tasks to the database.
 
     Args:
-        ctx: The context.p
+        ctx: The context.
         tasks: The list of tasks to write or update.
     """
     ctx.deps.tasks_db.write_tasks(tasks)
@@ -64,7 +56,6 @@ async def current_date_time(ctx: RunContext[Deps]) -> str:
         ctx: The context.
     """
     return datetime.datetime.now().isoformat()
-
 
 @agent.tool
 def generate_task_id(ctx: RunContext[Deps]) -> str:
