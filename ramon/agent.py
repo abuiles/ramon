@@ -24,7 +24,7 @@ class Deps:
         tasks_db: Database
         jira_client: JiraClient
 
-gpt4o = "openai:gpt-4o-mini"
+gpt4o = "openai:gpt-4o"
 agent = Agent(
     gpt4o,
     deps_type=Deps,
