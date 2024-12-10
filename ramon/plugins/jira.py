@@ -8,6 +8,8 @@ def get_jira_instance() -> JIRA:
     api_token = os.getenv('JIRA_TOKEN')
     return JIRA(server=server, basic_auth=(email, api_token))
 
+
+
 def get_task_status_in_jira(task_key: str) -> str:
     jira = get_jira_instance()
     issue = jira.issue(task_key)
@@ -57,4 +59,19 @@ def create_issue_in_jira(project_key: str, task: Task) -> tuple[bool, str]:
     except Exception as e:
         print(f"Failed to create issue: {task}. Error: {e}")
         return (False, "")
+
+def get_task_assignee_in_jira(task_key: str) -> str:
+    """
+    Gets the assignee name for a JIRA task.
+    
+    Args:
+        task_key (str): The JIRA issue key (e.g., 'PROJ-123')
+    
+    Returns:
+        str: The assignee's display name or 'Unassigned' if no assignee
+    """
+    jira = get_jira_instance()
+    issue = jira.issue(task_key)
+    assignee = issue.fields.assignee
+    return assignee.displayName if assignee else 'Unassigned'
 

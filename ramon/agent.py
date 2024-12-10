@@ -8,7 +8,7 @@ from nanoid import generate
 from pydantic_ai.messages import Message
 import datetime
 from .models import Task, Database
-from .plugins.jira import create_issue_in_jira, get_task_status_in_jira
+from .plugins.jira import create_issue_in_jira, get_task_status_in_jira, get_task_assignee_in_jira
 
 @dataclass
 class JiraClient:
@@ -17,6 +17,9 @@ class JiraClient:
 
     def get_task_status(self, task_key: str) -> str:
         return get_task_status_in_jira(task_key)
+    
+    def get_task_assignee(self, task_key: str) -> str:
+        return get_task_assignee_in_jira(task_key)
 
 
 THIS_DIR = Path(__file__).parent
@@ -36,6 +39,19 @@ agent = Agent(
 @agent.system_prompt
 async def system_prompt() -> str:
     return SYSTEM_PROMPT
+
+@agent.tool
+def get_jira_task_assignee(ctx: RunContext[Deps], task_key: str) -> str:
+    """Get the assignee of a task in Jira.
+
+    Args:
+        ctx: The context.
+        task_key: The key of the task to get the assignee of.
+
+    Returns:
+        The assignee of the task.
+    """
+    return ctx.deps.jira_client.get_task_assignee(task_key) 
 
 @agent.tool
 def get_jira_task_status(ctx: RunContext[Deps], task_key: str) -> str:   
