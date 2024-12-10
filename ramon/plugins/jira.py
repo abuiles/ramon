@@ -1,0 +1,46 @@
+from jira import JIRA
+import os
+from ramon.models import Task
+
+def get_jira_instance() -> JIRA:
+    server = os.getenv('JIRA_SERVER')
+    email = os.getenv('JIRA_EMAIL')
+    api_token = os.getenv('JIRA_TOKEN')
+    return JIRA(server=server, basic_auth=(email, api_token))
+
+def create_issue_in_jira(project_key: str, task: Task) -> tuple[bool, str]:
+    """
+    Creates an issue in JIRA based on the provided task and project key.
+
+    Args:
+        project_key (str): The key of the JIRA project where the issue will be created.
+        task (Task): The task object containing details for the JIRA issue.
+
+    Returns:
+        tuple (bool, str): A tuple containing a boolean indicating success or failure, 
+                           and a string with the issue key if successful, or an empty string if not.
+    """
+    jira = get_jira_instance()
+
+    summary = task.task
+    description = task.description
+    issue_type = 'Task'
+    priority = task.priority if task.priority else 'Medium'
+
+    if not project_key or not summary or not description:
+        print(f"Skipping task due to missing fields: {task}")
+        return (False, "")
+
+    try:
+        new_issue = jira.create_issue(
+            project=project_key,
+            summary=summary,
+            description=description,
+            issuetype={'name': issue_type},
+            priority={'name': priority}
+        )
+        print(f"Issue created: {new_issue.key}")
+        return (True, new_issue.key)
+    except Exception as e:
+        print(f"Failed to create issue: {task}. Error: {e}")
+        return (False, "")
