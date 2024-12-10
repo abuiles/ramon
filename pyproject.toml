@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "ramon"
-version = "0.1.0"
+version = "0.2.0"
 description = "AI-powered task management system"
 authors = ["Adolfo Builes <builes.adolfo@gmail.com>"]
 readme = "README.md"
@@ -9,10 +9,12 @@ readme = "README.md"
 python = "^3.11"
 pydantic = "*"
 pydantic-ai = "*"
+
 devtools = "*"
 logfire = "*"
 nanoid = "*"
 httpx = "*"
+jira="*"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
@@ -22,6 +24,7 @@ black = "*"
 flake8 = "*"
 isort = "*"
 inline_snapshot = "*"
+click_default_group = "*"
 
 [build-system]
 requires = ["poetry-core"]
