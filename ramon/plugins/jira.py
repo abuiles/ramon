@@ -8,6 +8,11 @@ def get_jira_instance() -> JIRA:
     api_token = os.getenv('JIRA_TOKEN')
     return JIRA(server=server, basic_auth=(email, api_token))
 
+def get_task_status_in_jira(task_key: str) -> str:
+    jira = get_jira_instance()
+    issue = jira.issue(task_key)
+    return issue.fields.status.name
+
 def create_issue_in_jira(project_key: str, task: Task) -> tuple[bool, str]:
     """
     Creates an issue in JIRA based on the provided task and project key.

@@ -8,12 +8,15 @@ from nanoid import generate
 from pydantic_ai.messages import Message
 import datetime
 from .models import Task, Database
-from .plugins.jira import create_issue_in_jira
+from .plugins.jira import create_issue_in_jira, get_task_status_in_jira
 
 @dataclass
 class JiraClient:
     def create_ticket(self, project_key: str, task: Task) -> tuple[bool, str]:
         return create_issue_in_jira(project_key, task)
+
+    def get_task_status(self, task_key: str) -> str:
+        return get_task_status_in_jira(task_key)
 
 
 THIS_DIR = Path(__file__).parent
@@ -33,6 +36,19 @@ agent = Agent(
 @agent.system_prompt
 async def system_prompt() -> str:
     return SYSTEM_PROMPT
+
+@agent.tool
+def get_jira_task_status(ctx: RunContext[Deps], task_key: str) -> str:   
+    """Get the status of a task in Jira.
+
+    Args:
+        ctx: The context.
+        task_key: The key of the task to get the status of.
+
+    Returns:
+        The status of the task.
+    """
+    return ctx.deps.jira_client.get_task_status(task_key)
 
 @agent.tool
 async def create_jira_ticket(ctx: RunContext[Deps], project_key: str, task: Task) -> str:
