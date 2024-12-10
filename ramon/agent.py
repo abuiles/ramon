@@ -7,10 +7,22 @@ from pathlib import Path
 from nanoid import generate
 from pydantic_ai.messages import Message
 import datetime
-from .models import Task, Deps
+from .models import Task, Database
+from .plugins.jira import create_issue_in_jira
+
+@dataclass
+class JiraClient:
+    def create_ticket(self, project_key: str, task: Task) -> tuple[bool, str]:
+        return create_issue_in_jira(project_key, task)
+
 
 THIS_DIR = Path(__file__).parent
 SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()
+
+@dataclass
+class Deps:
+        tasks_db: Database
+        jira_client: JiraClient
 
 gpt4o = "openai:gpt-4o-mini"
 agent = Agent(

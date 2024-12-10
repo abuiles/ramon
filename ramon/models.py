@@ -44,14 +44,4 @@ class Database:
             json.dump([task.model_dump() for task in existing_tasks.values()], f, ensure_ascii=False, indent=4)
 
 
-@dataclass
-class JiraClient:
-    def create_ticket(self, project_key: str, task: Task) -> str:
-        print("Creating ticket", project_key, task.model_dump())
-        return "AFF-1234"
-
-
-@dataclass
-class Deps:
-        tasks_db: Database
-        jira_client: Any = None
+        

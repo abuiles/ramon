@@ -19,8 +19,8 @@ from pydantic_ai.messages import (
 from inline_snapshot import snapshot
 
 
-from ramon.models import Task, Database, JiraClient, Deps, StatusEnum
-from ramon.agent import agent, SYSTEM_PROMPT
+from ramon.models import Task, Database, StatusEnum
+from ramon.agent import agent, SYSTEM_PROMPT, JiraClient, Deps
 
 pytestmark = pytest.mark.anyio
 models.ALLOW_MODEL_REQUESTS = False

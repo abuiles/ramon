@@ -31,6 +31,14 @@ def create_issue_in_jira(project_key: str, task: Task) -> tuple[bool, str]:
         print(f"Skipping task due to missing fields: {task}")
         return (False, "")
 
+    # Debug print all arguments
+    print("Creating JIRA issue with arguments:")
+    print(f"  project: {project_key}")
+    print(f"  summary: {summary}")
+    print(f"  description: {description}")
+    print(f"  issuetype: {{'name': {issue_type}}}")
+    print(f"  priority: {{'name': {priority}}}")
+
     try:
         new_issue = jira.create_issue(
             project=project_key,
@@ -44,3 +52,4 @@ def create_issue_in_jira(project_key: str, task: Task) -> tuple[bool, str]:
     except Exception as e:
         print(f"Failed to create issue: {task}. Error: {e}")
         return (False, "")
+

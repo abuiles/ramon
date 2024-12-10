@@ -1,5 +1,5 @@
-from .agent import agent
-from .models import Database, JiraClient, Deps
+from .agent import agent, JiraClient, Deps
+from .models import Database
 from pydantic_ai.messages import (
     Message
 )
