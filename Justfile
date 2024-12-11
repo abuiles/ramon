@@ -8,8 +8,8 @@
 @lint-fix:
   uv run ruff check --fix
 
-@lint:
-  uv run ruff check
+@lint *options:
+  uv run ruff check {{options}}
 
 @chat:
   uv run python -m ramon
