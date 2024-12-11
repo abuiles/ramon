@@ -36,3 +36,12 @@ The following environment variables need to be configured:
 * `JIRA_EMAIL`: Your JIRA account email
 * `JIRA_TOKEN`: Your JIRA API token for authentication
 * `OPENAI_API_KEY`: Your OpenAI API key
+
+## Getting Your Jira Token
+
+To create the Jira API Key, follow these steps:
+1. Log into Jira using the service account you created.
+2. Click on the user profile icon in the top right corner.
+3. Select "Manage Account" from the dropdown menu.
+4. Navigate to the "Security" tab.
+5. Click on "Create and manage API Tokens".
