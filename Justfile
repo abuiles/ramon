@@ -3,8 +3,8 @@
 
 # Install dependencies and test dependencies
 @init:
-  poetry install
+  uv sync
 
 # Run pytest with supplied options
 @test *options:
-  poetry run pytest {{options}}
+  uv run pytest {{options}}

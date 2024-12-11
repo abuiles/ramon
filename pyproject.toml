@@ -1,53 +1,27 @@
-[tool.poetry]
+[project]
 name = "ramon"
 version = "0.2.0"
 description = "AI-powered task management system"
 authors = ["Adolfo Builes <builes.adolfo@gmail.com>"]
 readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "devtools>=0.12.2",
+    "httpx>=0.28.1",
+    "jira>=3.8.0",
+    "logfire>=2.6.2",
+    "nanoid>=2.0.0",
+    "pydantic-ai>=0.0.12",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-pydantic = "*"
-pydantic-ai = "*"
-
-devtools = "*"
-logfire = "*"
-nanoid = "*"
-httpx = "*"
-jira="*"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "*"
-pytest-asyncio = "*"
-dirty-equals = "*"
-black = "*"
-flake8 = "*"
-isort = "*"
-inline_snapshot = "*"
-click_default_group = "*"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-
-[tool.black]
-line-length = 88
-target-version = ["py311"]
-include = '\.pyi?$'
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203"]
-
-[tool.logfire]
-ignore_no_config = true
+[dependency-groups]
+dev = [
+    "black>=24.10.0",
+    "click-default-group>=1.2.4",
+    "dirty-equals>=0.8.0",
+    "flake8>=7.1.1",
+    "inline-snapshot>=0.15.1",
+    "isort>=5.13.2",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.24.0",
+]
