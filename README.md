@@ -41,6 +41,40 @@ The following environment variables need to be configured:
 * `JIRA_EMAIL`: Your JIRA account email
 * `JIRA_TOKEN`: Your JIRA API token for authentication
 * `OPENAI_API_KEY`: Your OpenAI API key
+* `DB_DIR`: Path to your tasks database directory
+* `PROMPT_EXTENSION`: Custom context for the AI assistant (see below)
+
+## Customizing the Assistant's Context
+
+Ramon can be customized to understand your specific workflow using the `PROMPT_EXTENSION` environment variable. This allows you to provide context about:
+- Project-specific information
+- Team members
+- JIRA project keys
+- Default task ownership
+- Any other workflow-specific details
+
+For example, create or edit your `.envrc` file:
+```bash
+export PROMPT_EXTENSION="Jira project keys:
+- RAM: Ramon-related tasks
+- WORK: Work projects
+
+### Team members
+- Alice (Engineering Manager)
+- Bob (Frontend)
+- Charlie (Backend)
+
+### Default owner
+- Tasks are assigned to Alice unless specified otherwise"
+```
+
+This context helps Ramon to:
+- Use the correct JIRA project keys
+- Understand team member roles and responsibilities
+- Set appropriate default task owners
+- Make more contextually relevant decisions
+
+> **Tip:** Use [direnv](https://direnv.net/) to automatically load these environment variables when you enter the project directory.
 
 ## Getting Your Jira Token
 
