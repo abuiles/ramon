@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from enum import Enum
 from pathlib import Path
 from typing import List
+import os
 
 class StatusEnum(str, Enum):
         to_do = "to_do"
@@ -24,11 +25,12 @@ class Task(BaseModel):
     metadata: str
     status: StatusEnum = StatusEnum.to_do
 
-THIS_DIR = Path(__file__).parent
+
+DB_DIR = Path(os.getenv('DB_DIR'))
 
 @dataclass
 class Database:
-    tasks_file: Path = THIS_DIR / 'tasks.json'
+    tasks_file: Path = DB_DIR / 'tasks.json'
 
     def read_tasks(self) -> List[Task]:
         with open(self.tasks_file, "r") as f:
