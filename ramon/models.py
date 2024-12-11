@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from enum import Enum
 from pathlib import Path
 from typing import List
-from typing import Any, Protocol
 
 class StatusEnum(str, Enum):
         to_do = "to_do"

@@ -1,6 +1,5 @@
 import click
 from click_default_group import DefaultGroup
-import asyncio
 from ramon import (
     agent,
     Database,
@@ -18,7 +17,7 @@ def cli():
 
 @cli.command()
 @click.argument('prompt', required=False, default='What do I need to work on?')
-def chat(prompt: str):
+def chat(prompt: str) -> None: 
     """Start a new chat with ramon."""
     click.echo("Type 'exit' or 'quit' to exit")
     database = Database()

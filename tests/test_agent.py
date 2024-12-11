@@ -1,7 +1,6 @@
 from datetime import timezone
 import pytest
 from dirty_equals import IsNow
-from pathlib import Path
 import json
 
 from pydantic_ai import models
@@ -16,10 +15,9 @@ from pydantic_ai.messages import (
     ModelTextResponse,
 )
 
-from inline_snapshot import snapshot
 
 
-from ramon.models import Task, Database, StatusEnum
+from ramon.models import Database, StatusEnum
 from ramon.agent import agent, SYSTEM_PROMPT, JiraClient, Deps
 
 pytestmark = pytest.mark.anyio

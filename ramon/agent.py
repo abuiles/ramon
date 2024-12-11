@@ -1,11 +1,7 @@
-import json
-from typing import List
 from dataclasses import dataclass
-from typing import Any, Protocol
 from pydantic_ai import Agent, RunContext
 from pathlib import Path
 from nanoid import generate
-from pydantic_ai.messages import Message
 import datetime
 from .models import Task, Database
 from .plugins.jira import create_issue_in_jira, get_task_status_in_jira, get_task_assignee_in_jira

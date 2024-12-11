@@ -1,6 +1,5 @@
 import pytest
 import json
-from pathlib import Path
 from ramon.models import Task, Database, StatusEnum
 from ramon.agent import JiraClient
 
