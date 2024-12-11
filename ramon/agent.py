@@ -5,6 +5,7 @@ from nanoid import generate
 import datetime
 from .models import Task, Database
 from .plugins.jira import create_issue_in_jira, get_task_status_in_jira, get_task_assignee_in_jira
+import os
 
 @dataclass
 class JiraClient:
@@ -34,7 +35,7 @@ agent = Agent(
 
 @agent.system_prompt
 async def system_prompt() -> str:
-    return SYSTEM_PROMPT
+    return f"{SYSTEM_PROMPT}\n\n{os.getenv('PROMPT_EXTENSION')}"
 
 @agent.tool
 def get_jira_task_assignee(ctx: RunContext[Deps], task_key: str) -> str:
