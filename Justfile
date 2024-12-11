@@ -1,7 +1,7 @@
-# Run tests and linters
+# Run tests
 @default: test
 
-# Install dependencies and test dependencies
+# Install dependencies
 @init:
   uv sync
 
