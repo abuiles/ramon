@@ -52,7 +52,7 @@ def deps(temp_tasks_file):
 
 async def test_get_tasks(deps):
     with agent.override(model=TestModel(call_tools=['get_tasks'])):
-        result = await agent.run(
+        await agent.run(
             "Show me all tasks",
             deps=deps
         )
