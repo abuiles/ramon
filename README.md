@@ -1,6 +1,6 @@
 # Ram-on
 
-Ramon is a good AI assistant that streamlines tasks and boosts everyday efficiency.
+Ramon is a good AI assistant that helps manage, prioritize, and streamline tasks. It tracks deadlines, facilitates collaborations, and integrates with systems like JIRA to automate workflows, enabling efficient task management and completion.
 
 > **Note:** Ramon is currently in development mode. In the future, it will be available as a proper Python package. For now, you'll need to run it directly from the repository.
 
