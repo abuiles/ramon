@@ -2,3 +2,4 @@ __pycache__/
 venv
 ramon.egg-info/
 Pipfile
+localdb
