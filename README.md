@@ -14,18 +14,23 @@ git clone https://github.com/abuiles/ramon.git
 ```bash
 cd ramon
 ```
-3. Install uv: https://docs.astral.sh/uv/getting-started/installation/
+3. Install Just:
+```bash
+brew install just
+```
 
-4. Initialize the project:
+4. Install uv: https://docs.astral.sh/uv/getting-started/installation/
+```bash
+brew install uv
+```
 
+5. Initialize the project:
 ```bash
 just init
 ```
-
-5. Run the project:
-
+6. Start the cli in prompt mode:
 ```bash
-uv run python -m ramon
+just chat
 ```
 
 ## Environment Variables
