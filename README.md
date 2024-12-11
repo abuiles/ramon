@@ -115,3 +115,34 @@ Since it's a JSON file, you can:
 - Debug by examining file changes
 
 > **Tip:** Using git in your `$DB_DIR` is recommended for tracking changes and backup.
+
+## Roadmap
+
+Ramon is actively being developed. Here are the key features planned for future releases:
+
+### Database Improvements
+- Replace JSON file storage with SQLite for better reliability and performance
+- Add data migration tools for existing tasks
+- Implement proper backup and restore functionality
+
+### Web Interface
+- Add a web dashboard for task management
+- Provide visual task tracking and reporting
+- Enable team collaboration features
+
+### Smart Task Follow-ups
+Ramon will be able to automatically follow up on tasks:
+```bash
+# Example future workflow
+You: "Ramon, check with Amy why the landing page task isn't completed yet."
+
+Ramon: "I'll start a conversation with Amy about the landing page task:
+1. Send a Slack message to Amy
+2. Wait for her response
+3. Ask follow-up questions if needed
+4. Provide you with a clear status update"
+```
+
+### Deployment
+
+**Help Needed**: I'm punting on the deployment for now. If you have experience with cloud deployments or suggestions on how to automate the process for Ramon, please contribute your insights. The goal is to make Ramon easily deployable to any cloud provider.
