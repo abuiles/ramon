@@ -116,6 +116,76 @@ Since it's a JSON file, you can:
 
 > **Tip:** Using git in your `$DB_DIR` is recommended for tracking changes and backup.
 
+### Example Interactions with the Task Management Assistant
+
+Here’s how users can interact with the assistant to manage tasks efficiently.
+
+#### Checking Current Tasks
+- **User:** What do I need to work on today?
+- **Assistant:**
+  ```
+  - Review Project Alpha Report
+  - Follow up with John on Task XYZ
+  ```
+
+#### Adding a Task
+- **User:** Add a new task: Create monthly sales report due next Friday.
+- **Assistant:**
+  ```
+  Task 'Create monthly sales report' added. Due: Dec 8, 2024
+  ```
+
+#### Reviewing Task Status
+- **User:** Show me the JIRA status of all tasks.
+- **Assistant:**
+  ```
+  - Task ID: ABC-123 Status: In Progress
+  - Task ID: DEF-456 Status: Completed
+  ```
+
+#### Snoozing a Task
+- **User:** Snooze 'Prepare budget proposal' to next Monday.
+- **Assistant:**
+  ```
+  Task 'Prepare budget proposal' snoozed until Dec 11, 2024
+  ```
+
+#### Changing Task Priority
+- **User:** Change the priority of 'Update marketing plan' to high.
+- **Assistant:**
+  ```
+  Priority for 'Update marketing plan' changed to High.
+  ```
+
+#### Changing Task Owner
+- **User:** Assign 'Develop new user features' to Alex.
+- **Assistant:**
+  ```
+  Task 'Develop new user features' assigned to Alex.
+  ```
+
+#### Updating Task Status
+- **User:** Mark the task 'Create slide deck for presentation' as completed.
+- **Assistant:**
+  ```
+  Task 'Create slide deck for presentation' marked as completed.
+  ```
+
+#### Collaboration and Guidance
+- **User:** Work with Maria on budget analysis for next quarter.
+- **Assistant:**
+  ```
+  Task 'Work with Maria on budget analysis' added. Priority: High
+  ```
+
+#### Handling JIRA Tickets
+- **User:** Create a JIRA ticket for the task 'Enhance website SEO'.
+- **Assistant:**
+  ```
+  JIRA Ticket Created: SEO-789
+  Task updated with JIRA Reference: SEO-789
+  ```
+
 ## Roadmap
 
 Ramon is actively being developed. Here are the key features planned for future releases:
