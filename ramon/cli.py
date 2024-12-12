@@ -51,4 +51,4 @@ def summary(smart: bool) -> None:
     """Show a summary of the tasks."""
     database = Database()
     tasks = database.read_tasks()
-    summarize_tasks(tasks, smart)
+    print(summarize_tasks(tasks, smart))

@@ -3,7 +3,7 @@ from pydantic_ai import Agent, RunContext
 from pathlib import Path
 from nanoid import generate
 import datetime
-from .models import Task, Database
+from .models import Task, Database, summarize_tasks
 import ramon.plugins.jira as jira_client
 import os
 
@@ -43,8 +43,9 @@ agent = Agent(
 )
 
 @agent.system_prompt
-async def system_prompt() -> str:
-    return f"{SYSTEM_PROMPT}\n\n{os.getenv('PROMPT_EXTENSION')}"
+async def system_prompt(ctx: RunContext[Deps]) -> str:
+    tasks_summary = summarize_tasks(ctx.deps.tasks_db.read_tasks())
+    return f"{SYSTEM_PROMPT}\n\n{os.getenv('PROMPT_EXTENSION')}\ncurrent tasks:\n{tasks_summary} "
 
 @agent.tool
 def get_jira_task_assignee(ctx: RunContext[Deps], task_key: str) -> str:

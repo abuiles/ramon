@@ -26,7 +26,7 @@ class Task(BaseModel):
     status: StatusEnum = StatusEnum.to_do
 
     
-def summarize_tasks(tasks: List[Task] , smart: bool = False) -> None:
+def summarize_tasks(tasks: List[Task] , smart: bool = False) -> str:
     def get_immediate_priorities(tasks):
         today = datetime.now().date()
         return [task for task in tasks if task.status == 'to_do' and datetime.strptime(task.due_date, '%Y-%m-%d').date() > today]
@@ -34,24 +34,26 @@ def summarize_tasks(tasks: List[Task] , smart: bool = False) -> None:
     def get_contextual_relevance(tasks):
         return [task for task in tasks if task.status == 'in_progress']
     
+    summary = ""
     if smart:
         immediate_priorities = get_immediate_priorities(tasks)
         contextual_relevance = get_contextual_relevance(tasks)
 
-        print("Immediate Priorities:")
+        summary += "Immediate Priorities:\n"
         for task in immediate_priorities:
             due_date = datetime.strptime(task.due_date, '%Y-%m-%d').strftime('%b %d, %Y')
-            print(f"- {task.task}, due {due_date}")
+            summary += f"- {task.task}, due {due_date}\n"
 
-        print("\nRecurring Reminders:")
-        print("None currently scheduled.")
+        summary += "\nRecurring Reminders:\nNone currently scheduled.\n"
 
-        print("\nContextual Relevance:")
+        summary += "\nContextual Relevance:\n"
         for task in contextual_relevance:
-            print(f"- {task.task}, ongoing task.")
+            summary += f"- {task.task}, ongoing task.\n"
     else:
         for task in tasks:
-            print(f"- {task.task} (ID: {task.id}, Owner: {task.owner}), due {task.due_date}")
+            summary += f"- {task.task} (ID: {task.id}, Owner: {task.owner}), due {task.due_date}\n"
+
+    return summary
 
 
 DB_DIR = Path(os.getenv('DB_DIR'))
