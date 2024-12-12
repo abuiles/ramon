@@ -17,6 +17,9 @@
 @archive:
   uv run python -m ramon archive-completed-tasks
 
+@summary *options:
+  uv run python -m ramon summary {{options}}
+
 # Run pytest with supplied options
 @test *options:
   uv run pytest {{options}}

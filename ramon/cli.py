@@ -6,6 +6,7 @@ from ramon import (
     JiraClient,
     Deps,
     Message,
+    summarize_tasks
 )
 
 import logfire
@@ -43,3 +44,11 @@ def archive_completed_tasks() -> None:
     for task in completed_tasks:
         database.archive_task(task.id)
     click.echo(f"Archived {len(completed_tasks)} completed tasks.")
+
+@cli.command()
+@click.option('--smart', is_flag=True, help='Show a smart summary of the tasks.')
+def summary(smart: bool) -> None:
+    """Show a summary of the tasks."""
+    database = Database()
+    tasks = database.read_tasks()
+    summarize_tasks(tasks, smart)

@@ -5,7 +5,7 @@ from enum import Enum
 from pathlib import Path
 from typing import List
 import os
-
+from datetime import datetime
 class StatusEnum(str, Enum):
         to_do = "to_do"
         in_progress = "in_progress"
@@ -24,6 +24,34 @@ class Task(BaseModel):
     completed_at: str
     metadata: str
     status: StatusEnum = StatusEnum.to_do
+
+    
+def summarize_tasks(tasks: List[Task] , smart: bool = False) -> None:
+    def get_immediate_priorities(tasks):
+        today = datetime.now().date()
+        return [task for task in tasks if task.status == 'to_do' and datetime.strptime(task.due_date, '%Y-%m-%d').date() > today]
+
+    def get_contextual_relevance(tasks):
+        return [task for task in tasks if task.status == 'in_progress']
+    
+    if smart:
+        immediate_priorities = get_immediate_priorities(tasks)
+        contextual_relevance = get_contextual_relevance(tasks)
+
+        print("Immediate Priorities:")
+        for task in immediate_priorities:
+            due_date = datetime.strptime(task.due_date, '%Y-%m-%d').strftime('%b %d, %Y')
+            print(f"- {task.task}, due {due_date}")
+
+        print("\nRecurring Reminders:")
+        print("None currently scheduled.")
+
+        print("\nContextual Relevance:")
+        for task in contextual_relevance:
+            print(f"- {task.task}, ongoing task.")
+    else:
+        for task in tasks:
+            print(f"- {task.task} (ID: {task.id}, Owner: {task.owner}), due {task.due_date}")
 
 
 DB_DIR = Path(os.getenv('DB_DIR'))

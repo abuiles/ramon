@@ -1,5 +1,5 @@
 from .agent import agent, JiraClient, Deps
-from .models import Database
+from .models import Database, summarize_tasks
 from pydantic_ai.messages import (
     Message
 )
@@ -9,5 +9,6 @@ __all__ = [
     JiraClient,
     Deps,
     Message,
-    agent
+    agent,
+    summarize_tasks
 ]
