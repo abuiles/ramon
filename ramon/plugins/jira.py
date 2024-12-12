@@ -1,6 +1,7 @@
 from jira import JIRA
 import os
 from ramon.models import Task
+import webbrowser
 
 def get_jira_instance() -> JIRA:
     server = os.getenv('JIRA_SERVER')
@@ -75,3 +76,43 @@ def get_task_assignee_in_jira(task_key: str) -> str:
     assignee = issue.fields.assignee
     return assignee.displayName if assignee else 'Unassigned'
 
+def add_comment_to_jira_issue(task_key: str, comment: str) -> None:
+    """
+    Adds a comment to a JIRA issue.
+    
+    Args:
+        task_key: The JIRA issue key (e.g., 'PROJ-123')
+        comment: The comment to add to the JIRA issue   
+
+    Returns:
+        None    
+    """
+    jira = get_jira_instance()
+    jira.add_comment(task_key, comment)
+
+def load_comments_for_jira_issue(task_key: str) -> list[str]:
+    """
+    Loads all comments for a JIRA issue.
+    
+    Args:
+        task_key: The JIRA issue key (e.g., 'PROJ-123')
+
+    Returns:
+        list[str]: A list of comments from the JIRA issue.
+    """
+    jira = get_jira_instance()
+    issue = jira.issue(task_key)
+    return [f"from: {comment.author.displayName}, message: {comment.body}" for comment in issue.fields.comment.comments]
+    
+def open_jira_issue(task_key: str) -> None:
+    """
+    Opens the JIRA issue in the default web browser.
+    
+    Args:
+        task_key: The JIRA issue key (e.g., 'PROJ-123')
+    """
+    webbrowser.open(get_jira_issue_url(task_key))
+    
+
+def get_jira_issue_url(task_key: str) -> str:
+    return f"{os.getenv('JIRA_SERVER')}/browse/{task_key}"
