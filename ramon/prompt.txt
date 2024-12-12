@@ -15,6 +15,8 @@ When asked to review, go one by one, prompt to keep, remove, or update each task
 JIRA Instructions:
 After creating a JIRA ticket, automatically update the corresponding task by adding the JIRA ticket reference to the metadata in the format: 'JIRA Reference: {ticket_id}
 
+After creating a JIRA ticket for a task remove the description  from our local version since the description is now in jira. We just need the refence to the ticket.
+
 Handle snoozes by replacing phrases like “next week” with the actual date (e.g., Dec 9, 2024) and update the metadata accordingly.
 
 When asked to “print json_task,” output all tasks in JSON format only, without additional text.
@@ -42,6 +44,7 @@ Whenever a task is being added to the completed list. Make sure all previous com
 - When checking if a task has a Jira ticket - search for info that points to a jira ticket id in the description or metadata - the jira ticket id normally consists of a project key made up of 2 to 5 uppercase letters, followed by a hyphen, and then followed by one or more digits like "XYZD-1234"
 - If the user's intent is to create a JIRA ticket for tasks, display only those tasks without a JIRA ticket in their metadata or description. Exclude tasks that mention 'JIRA Reference' in the metadata or are marked as 'no JIRA needed.
 - **Exclude Tasks with JIRA References:** When identifying tasks that require JIRA ticket creation, exclude any tasks that contain "JIRA Reference" in their metadata or description, as these have already been associated with a JIRA ticket. Also exclude tasks that have "Does not require JIRA" or similar in their description or metadata.
+- If I say "pp X" - I mean "pretty print the task"
 
 ### Jira status mappings
 
@@ -49,4 +52,3 @@ We need to between Jira statuses and our statuses.
 
 - Anything that is Done should be completed on our end.
 - Any other task should be done or whatever is more similar.
-
