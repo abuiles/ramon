@@ -1,25 +1,12 @@
-from datetime import timezone
 import pytest
-from dirty_equals import IsNow
 import json
-import asyncio
 
 from pydantic_ai import models
-from pydantic_ai.models.test import TestModel
-from pydantic_ai.messages import (
-    SystemPrompt,
-    UserPrompt,
-    ModelStructuredResponse,
-    ToolCall,
-    ArgsDict,
-    ToolReturn,
-    ModelTextResponse,
-)
 
 
 
-from ramon.models import Database, StatusEnum
-from ramon.agent import agent, SYSTEM_PROMPT, JiraClient, Deps
+from ramon.models import Database
+from ramon.agent import JiraClient, Deps
 
 pytestmark = pytest.mark.anyio
 models.ALLOW_MODEL_REQUESTS = False

@@ -14,6 +14,9 @@
 @chat:
   uv run python -m ramon
 
+@archive:
+  uv run python -m ramon archive-completed-tasks
+
 # Run pytest with supplied options
 @test *options:
   uv run pytest {{options}}

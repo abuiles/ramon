@@ -32,3 +32,14 @@ def chat(prompt: str) -> None:
             result = agent.run_sync(prompt, deps=deps, message_history=message_history)
             print(result.data)
             message_history.extend(result.new_messages())
+
+
+@cli.command()
+def archive_completed_tasks() -> None:
+    """Archive all completed tasks."""
+    database = Database()
+    tasks = database.read_tasks()
+    completed_tasks = [task for task in tasks if task.status == "completed"]    
+    for task in completed_tasks:
+        database.archive_task(task.id)
+    click.echo(f"Archived {len(completed_tasks)} completed tasks.")

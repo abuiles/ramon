@@ -9,7 +9,6 @@ from ramon.plugins.jira import (
     open_jira_issue,
     get_jira_issue_url,
 )
-from ramon.models import Task, StatusEnum
 
 @pytest.fixture
 def mock_env_vars():

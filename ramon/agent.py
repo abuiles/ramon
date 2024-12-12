@@ -113,6 +113,16 @@ def add_comment_to_jira_issue(ctx: RunContext[Deps], task_key: str, comment: str
     """
     return ctx.deps.jira_client.add_comment_to_jira_issue(task_key, comment)
 
+@agent.tool 
+def archive_task(ctx: RunContext[Deps], task_id: str) -> None:
+    """Archive a task.
+
+    Args:
+        ctx: The context.
+        task_id: The id of the task to archive.
+    """
+    ctx.deps.tasks_db.archive_task(task_id)
+
 @agent.tool
 async def get_task_by_id(ctx: RunContext[Deps], task_id: str) -> Task:
     """Get a task by its id.
