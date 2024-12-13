@@ -60,6 +60,11 @@ DB_DIR = Path(os.getenv('DB_DIR'))
 
 @dataclass
 class Database:
+    """
+    TODO: need to refactor this class. It feels a bit messy and defensive. 
+    but this is mostly while I'm figuring out the interactions with the agent.
+    """
+
     tasks_file: Path = DB_DIR / 'tasks.json'
     archived_tasks_file: Path = DB_DIR / 'archived_tasks.json' 
 
@@ -71,22 +76,30 @@ class Database:
             with open(self.archived_tasks_file, "w", encoding='utf-8') as f:
                 json.dump([], f, ensure_ascii=False, indent=4)
 
-    def read_tasks(self) -> List[Task]:
+    def read_tasks(self, db: str = "tasks") -> List[Task]:
         self.create_files() 
-        with open(self.tasks_file, "r") as f:
-            tasks_data = json.load(f)
-            return [Task(**task) for task in tasks_data]
+        if db == "tasks":
+            with open(self.tasks_file, "r") as f:
+                tasks_data = json.load(f)
+        elif db == "archived_tasks":
+            with open(self.archived_tasks_file, "r") as f:
+                tasks_data = json.load(f)
+        return [Task(**task) for task in tasks_data]
 
-    def write_tasks(self, tasks: List[Task]) -> None:
-        existing_tasks = {task.id: task for task in self.read_tasks()}
+    def write_tasks(self, tasks: List[Task], db: str = "tasks") -> None:
+        existing_tasks = {task.id: task for task in self.read_tasks(db)}
         for task in tasks:
             existing_tasks[task.id] = task
-        with open(self.tasks_file, "w", encoding='utf-8') as f:
-            json.dump([task.model_dump() for task in existing_tasks.values()], f, ensure_ascii=False, indent=4)
-
-    def archive_task(self, task_id: str) -> None:
+        if db == "tasks":
+            with open(self.tasks_file, "w", encoding='utf-8') as f:
+                json.dump([task.model_dump() for task in existing_tasks.values()], f, ensure_ascii=False, indent=4)
+        elif db == "archived_tasks":
+            with open(self.archived_tasks_file, "w", encoding='utf-8') as f:
+                json.dump([task.model_dump() for task in existing_tasks.values()], f, ensure_ascii=False, indent=4)
+    
+    def archive_task(self, task_id: str, db: str = "tasks" ) -> None:
         self.create_files()
-        existing_tasks = {task.id: task for task in self.read_tasks()}
+        existing_tasks = {task.id: task for task in self.read_tasks(db)}
         if task_id in existing_tasks:
             task_to_archive = existing_tasks.pop(task_id)
             with open(self.tasks_file, "w", encoding='utf-8') as f:
