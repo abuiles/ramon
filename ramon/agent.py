@@ -36,9 +36,9 @@ class Deps:
         tasks_db: Database
         jira_client: JiraClient
 
-gpt4o = "openai:gpt-4o"
+gpt4omini = "openai:gpt-4o-mini"
 agent = Agent(
-    gpt4o,
+    gpt4omini,
     deps_type=Deps,
 )
 
@@ -114,7 +114,7 @@ def add_comment_to_jira_issue(ctx: RunContext[Deps], task_key: str, comment: str
     """
     return ctx.deps.jira_client.add_comment_to_jira_issue(task_key, comment)
 
-@agent.tool 
+@agent.tool
 def archive_task(ctx: RunContext[Deps], task_id: str) -> None:
     """Archive a task.
 
@@ -136,16 +136,17 @@ async def get_task_by_id(ctx: RunContext[Deps], task_id: str) -> Task:
     return next((task for task in tasks if task.id == task_id), None)
 
 @agent.tool
-async def get_tasks(ctx: RunContext[Deps], status: list[str] = None, extended: bool = False) -> list[Task]:
+async def get_tasks(ctx: RunContext[Deps], status: list[str] = None, db: str = "tasks") -> list[Task]:
     """Get all tasks from the database. By default we should load 'to_do' tasks.
     Only load 'in_progress', 'blocked', 'on_hold', canceled and completed tasks if explicitly asked.
 
     Args:
         ctx: The context.
         status: The status of the tasks to get. It can be a list of statuses. Valid statuses are: {', '.join(Task.Status.values())}
+        db: The database to read the tasks from. It can be 'tasks' or 'archived_tasks'.
     """
     print("filtering by status", status)
-    tasks = ctx.deps.tasks_db.read_tasks()
+    tasks = ctx.deps.tasks_db.read_tasks(db)
     if status:
         tasks = [task for task in tasks if task.status in status]
 
@@ -159,18 +160,16 @@ async def get_tasks(ctx: RunContext[Deps], status: list[str] = None, extended: b
     for status, count in status_counts.items():
         print(f"Tasks with status '{status}': {count}")
 
-    if extended:
-        return [task.model_dump() for task in tasks]
-    else:
-        return [{"id": task.id, "owner": task.owner, "task": task.task, "priority": task.priority} for task in tasks]
+    return [task.model_dump() for task in tasks]
 
 @agent.tool
-async def update_or_create_task(ctx: RunContext[Deps], tasks: list[Task]) -> None:
+async def update_or_create_task(ctx: RunContext[Deps], tasks: list[Task], db = "tasks") -> None:
     """Write or update tasks to the database.
 
     Args:
         ctx: The context.
         tasks: The list of tasks to write or update.
+        db: The database to write the tasks to. It can be 'tasks' or 'archived_tasks'.
     """
     ctx.deps.tasks_db.write_tasks(tasks)
 
