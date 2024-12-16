@@ -186,4 +186,4 @@ async def current_date_time(ctx: RunContext[Deps]) -> str:
 def generate_task_id(ctx: RunContext[Deps]) -> str:
     """Generate a new task id.
     """
-    return generate()
+    return generate(size=4)
