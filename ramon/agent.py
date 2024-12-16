@@ -29,7 +29,7 @@ class JiraClient:
 
 
 THIS_DIR = Path(__file__).parent
-SYSTEM_PROMPT = (THIS_DIR / 'prompt.txt').read_text()
+SYSTEM_PROMPT = (THIS_DIR / 'prompts' / 'v1.txt').read_text()
 
 @dataclass
 class Deps:
